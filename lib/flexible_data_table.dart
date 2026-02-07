@@ -2361,112 +2361,38 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       }
     }
 
-    return Container(
-      height: 40,
-      width: dropdownWidth,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: _surfaceColor,
-        border: Border.all(
-          color: _border,
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(7),
-        child: Material(
-          color: Colors.transparent,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 4,
-                height: 40,
-                color: widget.primaryColor,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 2),
-                  child: DropdownMenu(
-                    // isExpanded: true,
-                    initialSelection: currentValue,
-                    // isDense: true,
-                    // dropdownColor: _surfaceColor,
-                    // icon: Icon(
-                    //   Icons.arrow_drop_down,
-                    //   color: widget.primaryColor,
-                    //   size: 20,
-                    // ),
-                    // iconSize: 20,
-                    // underline: Container(),
-                    // selectedItemBuilder: (context) {
-                    //   return pageSizes.map<Widget>((dynamic value) {
-                    //     return Align(
-                    //       alignment: Alignment.centerLeft,
-                    //       child: Text(
-                    //         value == allItemsValue ? "All" : "$value",
-                    //         style: GoogleFonts.poppins(
-                    //           fontSize: 13,
-                    //           fontWeight: FontWeight.w500,
-                    //           color: widget.primaryColor,
-                    //         ),
-                    //         overflow: TextOverflow.ellipsis,
-                    //       ),
-                    //     );
-                    //   }).toList();
-                    // },
-                    // elevation: 4,
-                    // borderRadius: BorderRadius.circular(8),
-                    // style: GoogleFonts.poppins(
-                    //   color: _rowText,
-                    //   fontSize: 13,
-                    // ),
-                    // alignment: AlignmentDirectional.centerStart,
-                    menuHeight: 305,
-                    dropdownMenuEntries: pageSizes.map((dynamic value) {
-                      // bool isSelected = currentValue == value;
-                      return DropdownMenuEntry<dynamic>(
-                        value: value,
-                        label: value == allItemsValue ? "All" : "$value",
-                      );
-                    }).toList(),
-                    onSelected: (value) {
-                      if (value != null) {
-                        setState(() {
-                          if (value == allItemsValue) {
-                            _isShowingAll = true;
+    return DropdownMenu(
+      initialSelection: currentValue,
+      menuHeight: 305,
+      dropdownMenuEntries: pageSizes.map((dynamic value) {
+        return DropdownMenuEntry<dynamic>(
+          value: value,
+          label: value == allItemsValue ? "All" : "$value",
+        );
+      }).toList(),
+      onSelected: (value) {
+        if (value != null) {
+          setState(() {
+            if (value == allItemsValue) {
+              _isShowingAll = true;
 
-                            if (widget.isServerSide) {
-                              _pageSize = math.max(widget.totalItems, 1);
-                            }
+              if (widget.isServerSide) {
+                _pageSize = math.max(widget.totalItems, 1);
+              }
 
-                            _currentPage = 0;
-                          } else {
-                            _isShowingAll = false;
-                            _pageSize = value as int;
-                            _currentPage = 0;
-                          }
-                        });
+              _currentPage = 0;
+            } else {
+              _isShowingAll = false;
+              _pageSize = value as int;
+              _currentPage = 0;
+            }
+          });
 
-                        if (widget.isServerSide) {
-                          widget.onPageChanged?.call(1, _pageSize);
-                        }
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+          if (widget.isServerSide) {
+            widget.onPageChanged?.call(1, _pageSize);
+          }
+        }
+      },
     );
   }
 
