@@ -1,16 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:universal_html/html.dart' as html;
-import 'package:excel/excel.dart' as excel;
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum FlexibleDataTableType {
@@ -148,17 +141,6 @@ class FlexibleDataTable<T> extends StatefulWidget {
 }
 
 class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
-  String _formatTitle(String raw) {
-    return raw
-        .replaceAll(RegExp(r'_v\d+_?[a-zA-Z]*'), '') // remove _v1_en
-        .replaceAll(RegExp(r'_'), ' ') // _ → space
-        .replaceAll(RegExp(r'\s+'), ' ') // extra spaces
-        .trim()
-        .split(' ')
-        .map((w) => w.isEmpty ? w : w[0].toUpperCase() + w.substring(1))
-        .join(' ');
-  }
-
   List<T> _filteredData = [];
   TextEditingController _searchController = TextEditingController();
   String? _sortColumn;
@@ -169,7 +151,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   int _effectiveTotalItems = 0;
   FlexibleDataTableType _currentTableType = FlexibleDataTableType.standard;
 
-  bool _isShowingAll = false;
+  final bool _isShowingAll = false;
 
   Set<String> _visibleHeaders = <String>{};
   Map<String, String> _availableHeadersMap = <String, String>{};
@@ -2099,137 +2081,137 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     }
   }
 
-  Widget _buildExportButton() {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        popupMenuTheme: PopupMenuThemeData(
-          elevation: 6,
-          color: _dialogBackgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-      child: PopupMenuButton<String>(
-        offset: const Offset(-4, 38),
-        icon: null,
-        tooltip: 'Export options',
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                widget.primaryColor.withValues(alpha: 0.9),
-                widget.primaryColor,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: widget.primaryColor.withValues(alpha: 0.3),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.download_rounded,
-                color: Colors.white,
-                size: 15,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                'Export',
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ),
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            height: 36,
-            value: 'excel',
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            onTap: _exportToExcel,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color:
-                        _isDarkMode ? Colors.green[800] : Colors.green.shade100,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Icon(
-                    Icons.table_chart_rounded,
-                    color:
-                        _isDarkMode ? Colors.green[300] : Colors.green.shade700,
-                    size: 14,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Excel',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: _rowText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          PopupMenuItem(
-            height: 36,
-            value: 'pdf',
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            onTap: _exportToPdf,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: _isDarkMode ? Colors.red[800] : Colors.red.shade100,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Icon(
-                    Icons.picture_as_pdf_rounded,
-                    color: _isDarkMode ? Colors.red[300] : Colors.red.shade700,
-                    size: 14,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'PDF',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: _rowText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildExportButton() {
+  //   return Theme(
+  //     data: Theme.of(context).copyWith(
+  //       popupMenuTheme: PopupMenuThemeData(
+  //         elevation: 6,
+  //         color: _dialogBackgroundColor,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //       ),
+  //     ),
+  //     child: PopupMenuButton<String>(
+  //       offset: const Offset(-4, 38),
+  //       icon: null,
+  //       tooltip: 'Export options',
+  //       child: Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //         decoration: BoxDecoration(
+  //           gradient: LinearGradient(
+  //             colors: [
+  //               widget.primaryColor.withValues(alpha: 0.9),
+  //               widget.primaryColor,
+  //             ],
+  //             begin: Alignment.topLeft,
+  //             end: Alignment.bottomRight,
+  //           ),
+  //           borderRadius: BorderRadius.circular(6),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: widget.primaryColor.withValues(alpha: 0.3),
+  //               spreadRadius: 1,
+  //               blurRadius: 3,
+  //               offset: const Offset(0, 1),
+  //             ),
+  //           ],
+  //         ),
+  //         child: Row(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             const Icon(
+  //               Icons.download_rounded,
+  //               color: Colors.white,
+  //               size: 15,
+  //             ),
+  //             const SizedBox(width: 4),
+  //             Text(
+  //               'Export',
+  //               style: GoogleFonts.poppins(
+  //                 color: Colors.white,
+  //                 fontWeight: FontWeight.w500,
+  //                 fontSize: 12,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       itemBuilder: (context) => [
+  //         PopupMenuItem(
+  //           height: 36,
+  //           value: 'excel',
+  //           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+  //           onTap: _exportToExcel,
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Container(
+  //                 padding: const EdgeInsets.all(4),
+  //                 decoration: BoxDecoration(
+  //                   color:
+  //                       _isDarkMode ? Colors.green[800] : Colors.green.shade100,
+  //                   borderRadius: BorderRadius.circular(4),
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.table_chart_rounded,
+  //                   color:
+  //                       _isDarkMode ? Colors.green[300] : Colors.green.shade700,
+  //                   size: 14,
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 8),
+  //               Expanded(
+  //                 child: Text(
+  //                   'Excel',
+  //                   style: GoogleFonts.poppins(
+  //                     fontWeight: FontWeight.w500,
+  //                     fontSize: 12,
+  //                     color: _rowText,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         PopupMenuItem(
+  //           height: 36,
+  //           value: 'pdf',
+  //           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+  //           onTap: _exportToPdf,
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Container(
+  //                 padding: const EdgeInsets.all(4),
+  //                 decoration: BoxDecoration(
+  //                   color: _isDarkMode ? Colors.red[800] : Colors.red.shade100,
+  //                   borderRadius: BorderRadius.circular(4),
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.picture_as_pdf_rounded,
+  //                   color: _isDarkMode ? Colors.red[300] : Colors.red.shade700,
+  //                   size: 14,
+  //                 ),
+  //               ),
+  //               const SizedBox(width: 8),
+  //               Expanded(
+  //                 child: Text(
+  //                   'PDF',
+  //                   style: GoogleFonts.poppins(
+  //                     fontWeight: FontWeight.w500,
+  //                     fontSize: 12,
+  //                     color: _rowText,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildSearchField() {
     String searchHintText = widget.searchHint ?? 'Search';
@@ -2315,240 +2297,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     return searchableFields.join(', ');
   }
 
-  Widget _buildPageSizeDropdown() {
-    const int allItemsValue = -1;
-    final List<dynamic> pageSizes = [5, 10, 25, 50, 100, allItemsValue];
-
-    const double dropdownWidth = 100;
-
-    dynamic currentValue;
-    if (_isShowingAll) {
-      currentValue = allItemsValue;
-    } else {
-      if (pageSizes.contains(_pageSize)) {
-        currentValue = _pageSize;
-      } else {
-        currentValue = pageSizes
-            .where((size) => size != allItemsValue && size is int)
-            .reduce((a, b) =>
-                (_pageSize - a).abs() < (_pageSize - b).abs() ? a : b);
-      }
-    }
-
-    return DropdownMenu(
-      initialSelection: currentValue,
-      enableSearch: false,
-      menuHeight: 305,
-      width: dropdownWidth,
-      menuStyle: MenuStyle(
-        elevation: const WidgetStatePropertyAll(6),
-        // backgroundColor: WidgetStatePropertyAll(
-        //   appColors.dropDownfillColor,
-        // ),
-        visualDensity: VisualDensity.comfortable,
-        padding: const WidgetStatePropertyAll(
-          EdgeInsetsDirectional.zero,
-        ),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(4),
-              bottomRight: Radius.circular(4),
-            ),
-          ),
-        ),
-      ),
-      dropdownMenuEntries: pageSizes.map((dynamic value) {
-        return DropdownMenuEntry<dynamic>(
-          value: value,
-          label: value == allItemsValue ? "All" : "$value",
-        );
-      }).toList(),
-      onSelected: (value) {
-        if (value != null) {
-          setState(() {
-            if (value == allItemsValue) {
-              _isShowingAll = true;
-
-              if (widget.isServerSide) {
-                _pageSize = math.max(widget.totalItems, 1);
-              }
-
-              _currentPage = 0;
-            } else {
-              _isShowingAll = false;
-              _pageSize = value as int;
-              _currentPage = 0;
-            }
-          });
-
-          if (widget.isServerSide) {
-            widget.onPageChanged?.call(1, _pageSize);
-          }
-        }
-      },
-    );
-  }
-
-  Future<void> _exportToExcel() async {
-    await _showProgressDialogWithTimeout('Generating Excel file...', () async {
-      final workbook = excel.Excel.createExcel();
-      final sheet = workbook.sheets[workbook.getDefaultSheet() ?? 'Sheet1'];
-      if (sheet == null) throw Exception('Failed to create sheet');
-
-      final headerMap = _getVisibleHeaderMap();
-      final totalRecords = _filteredData.length;
-
-      // ===== TITLE =====
-      sheet.merge(
-        excel.CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0),
-        excel.CellIndex.indexByColumnRow(
-          columnIndex: headerMap.length,
-          rowIndex: 0,
-        ),
-      );
-
-      final titleCell = sheet.cell(
-        excel.CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0),
-      );
-      final title = widget.exportTitle != null
-          ? widget.exportTitle!
-          : _formatTitle(widget.fileName);
-
-      titleCell.value = excel.TextCellValue(title);
-
-      titleCell.cellStyle = excel.CellStyle(
-        bold: true,
-        fontSize: 16,
-        horizontalAlign: excel.HorizontalAlign.Center,
-      );
-
-      // ===== TOTAL =====
-      sheet.merge(
-        excel.CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 1),
-        excel.CellIndex.indexByColumnRow(
-          columnIndex: headerMap.length,
-          rowIndex: 1,
-        ),
-      );
-
-      final totalCell = sheet.cell(
-        excel.CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 1),
-      );
-      totalCell.value = excel.TextCellValue('Total Records: $totalRecords');
-      totalCell.cellStyle = excel.CellStyle(
-        bold: true,
-        fontSize: 12,
-        horizontalAlign: excel.HorizontalAlign.Center,
-      );
-
-      // ===== COLUMN HEADERS (ROW 3) =====
-      int columnIndex = 0;
-      final headerRowIndex = 3;
-
-      final sNoHeader = sheet.cell(
-        excel.CellIndex.indexByColumnRow(
-          columnIndex: columnIndex,
-          rowIndex: headerRowIndex,
-        ),
-      );
-      sNoHeader.value = excel.TextCellValue('S.No');
-      sNoHeader.cellStyle = excel.CellStyle(bold: true);
-      columnIndex++;
-
-      for (final key in headerMap.keys) {
-        final cell = sheet.cell(
-          excel.CellIndex.indexByColumnRow(
-            columnIndex: columnIndex,
-            rowIndex: headerRowIndex,
-          ),
-        );
-        cell.value = excel.TextCellValue(_availableHeadersMap[key] ?? key);
-        cell.cellStyle = excel.CellStyle(bold: true);
-        columnIndex++;
-      }
-
-      // ===== DATA ROWS =====
-      for (int i = 0; i < _filteredData.length; i++) {
-        columnIndex = 0;
-        final rowIndex = i + headerRowIndex + 1;
-
-        final sNoCell = sheet.cell(
-          excel.CellIndex.indexByColumnRow(
-            columnIndex: columnIndex,
-            rowIndex: rowIndex,
-          ),
-        );
-        sNoCell.value = excel.TextCellValue((i + 1).toString());
-        columnIndex++;
-
-        final rowData = widget.toTableDataMap(_filteredData[i]);
-        for (final key in headerMap.keys) {
-          final cell = sheet.cell(
-            excel.CellIndex.indexByColumnRow(
-              columnIndex: columnIndex,
-              rowIndex: rowIndex,
-            ),
-          );
-          cell.value = excel.TextCellValue(
-            _extractCellValue(rowData[key]),
-          );
-          columnIndex++;
-        }
-      }
-
-      final bytes = workbook.encode();
-      if (bytes == null) throw Exception('Excel encode failed');
-
-      await _saveFile(bytes, '${widget.fileName}.xlsx');
-    });
-  }
-
-// Add this helper method in your FlexibleDataTableState class
-  String _extractCellValue(dynamic value) {
-    if (value == null) return '';
-
-    // Handle Map (like your vehicle number object)
-    if (value is Map) {
-      if (value.containsKey('number')) {
-        return value['number']?.toString() ?? '';
-      }
-      if (value.containsKey('name')) {
-        return value['name']?.toString() ?? '';
-      }
-      // Return first non-null value from map
-      for (var val in value.values) {
-        if (val != null && val.toString().isNotEmpty) {
-          return val.toString();
-        }
-      }
-      return '';
-    }
-
-    // Handle List
-    if (value is List) {
-      return value.map((e) => e?.toString() ?? '').join(', ');
-    }
-
-    // Handle DateTime
-    if (value is DateTime) {
-      return value.toIso8601String();
-    }
-
-    // Handle bool
-    if (value is bool) {
-      return value ? 'Yes' : 'No';
-    }
-
-    // Handle numbers with decimal points
-    if (value is double) {
-      return value.toStringAsFixed(2);
-    }
-
-    // Handle everything else as string
-    return value.toString();
-  }
-
   Map<String, dynamic> _getHeaderMap() {
     if (widget.headers != null && widget.headers!.isNotEmpty) {
       return Map<String, dynamic>.from(widget.headers!);
@@ -2564,579 +2312,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           value: (_) => null);
     } else {
       return {'ID': null, 'Name': null, 'Description': null};
-    }
-  }
-
-  Future<void> _exportToPdf() async {
-    await _showProgressDialogWithTimeout('Generating PDF file...', () async {
-      final pdf = pw.Document();
-
-      final headerMap = _getVisibleHeaderMap();
-      final totalRecords = _filteredData.length;
-      final title = widget.exportTitle != null
-          ? widget.exportTitle!
-          : _formatTitle(widget.fileName);
-
-      pdf.addPage(
-        pw.MultiPage(
-          pageFormat: PdfPageFormat.a4.landscape,
-          margin: const pw.EdgeInsets.all(24),
-          build: (context) => [
-            // ===== TITLE =====
-            pw.Center(
-                child: pw.Text(
-              title,
-              style: pw.TextStyle(
-                fontSize: 20,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            )),
-
-            pw.SizedBox(height: 6),
-
-            // ===== TOTAL =====
-            pw.Center(
-              child: pw.Text(
-                'Total Records: $totalRecords',
-                style: pw.TextStyle(
-                  fontSize: 12,
-                  color: PdfColors.grey700,
-                ),
-              ),
-            ),
-
-            pw.SizedBox(height: 16),
-
-            // ===== TABLE =====
-            pw.TableHelper.fromTextArray(
-              border: pw.TableBorder.all(
-                color: PdfColors.grey300,
-                width: 0.5,
-              ),
-              headerDecoration: pw.BoxDecoration(
-                color: PdfColor.fromHex('6D28D9'),
-              ),
-              headerStyle: pw.TextStyle(
-                fontWeight: pw.FontWeight.bold,
-                color: PdfColors.white,
-                fontSize: 10,
-              ),
-              cellStyle: const pw.TextStyle(
-                fontSize: 9,
-              ),
-              cellAlignment: pw.Alignment.centerLeft,
-              cellHeight: 22,
-              headers: [
-                'S.No',
-                ...headerMap.keys.map(
-                  (key) => _availableHeadersMap[key] ?? key,
-                ),
-              ],
-              data: _filteredData.asMap().entries.map((entry) {
-                final rowMap = widget.toTableDataMap(entry.value);
-                return [
-                  (entry.key + 1).toString(),
-                  ...headerMap.keys.map(
-                    (key) => _extractCellValue(rowMap[key]),
-                  ),
-                ];
-              }).toList(),
-            ),
-          ],
-        ),
-      );
-
-      final bytes = await pdf.save();
-      await _saveFile(bytes, '${widget.fileName}.pdf');
-    });
-  }
-
-  Future<void> _showProgressDialogWithTimeout(
-      String message, Future<void> Function() operation) async {
-    bool needToDismiss = true;
-    bool operationComplete = false;
-
-    if (mounted) {
-      _showProgressDialog(message);
-    }
-
-    Timer? timeoutTimer;
-    timeoutTimer = Timer(const Duration(seconds: 15), () {
-      if (needToDismiss && mounted && !operationComplete) {
-        print("Operation timeout - forcing dialog dismissal");
-        _dismissDialog();
-        needToDismiss = false;
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Export operation continues in the background...'),
-              backgroundColor: widget.primaryColor,
-              duration: const Duration(seconds: 5),
-            ),
-          );
-        }
-      }
-    });
-
-    try {
-      await operation();
-      operationComplete = true;
-
-      timeoutTimer.cancel();
-
-      if (needToDismiss && mounted) {
-        await Future.delayed(const Duration(milliseconds: 500));
-        _dismissDialog();
-        needToDismiss = false;
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('File exported successfully'),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      operationComplete = true;
-
-      timeoutTimer.cancel();
-
-      if (needToDismiss && mounted) {
-        _dismissDialog();
-        needToDismiss = false;
-      }
-
-      _showErrorDialog('Export Error', e.toString());
-    }
-  }
-
-  void _dismissDialog() {
-    if (!mounted) return;
-
-    try {
-      if (Navigator.of(context, rootNavigator: true).canPop()) {
-        print("Dismissing dialog with rootNavigator");
-        Navigator.of(context, rootNavigator: true).pop();
-        return;
-      }
-    } catch (e) {
-      print("Standard Navigator dismissal failed: $e");
-    }
-
-    try {
-      if (Navigator.of(context).canPop()) {
-        print("Dismissing dialog with basic Navigator");
-        Navigator.of(context).pop();
-        return;
-      }
-    } catch (e) {
-      print("Basic Navigator dismissal failed: $e");
-    }
-
-    try {
-      if (Navigator.canPop(context)) {
-        print("Dismissing dialog with direct pop");
-        Navigator.pop(context);
-        return;
-      }
-    } catch (e) {
-      print("Direct pop dismissal failed: $e");
-    }
-
-    print("Warning: Could not dismiss dialog through normal means");
-  }
-
-  bool _isDialogShowing = false;
-
-  void _showProgressDialog(String message) {
-    if (_isDialogShowing) return;
-    _isDialogShowing = true;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return PopScope(
-          canPop: false,
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            elevation: 8,
-            backgroundColor: _dialogBackgroundColor,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                border: Border.all(
-                  color: _dialogBorderColor,
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: widget.primaryColor.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(widget.primaryColor),
-                      strokeWidth: 3,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    message,
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: _rowText,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Please wait while we prepare your file...',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: _subtleTextColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    ).then((_) {
-      _isDialogShowing = false;
-    });
-  }
-
-  void _showSuccessDialog(String title, Map<String, String> details) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        elevation: 8,
-        backgroundColor: _dialogBackgroundColor,
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.0),
-            border: Border.all(
-              color: _dialogBorderColor,
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                  color: _isDarkMode
-                      ? Colors.green[800]!.withValues(alpha: 0.3)
-                      : Colors.green.shade50,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.check_circle_rounded,
-                  color:
-                      _isDarkMode ? Colors.green[400] : Colors.green.shade600,
-                  size: 40,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color:
-                      _isDarkMode ? Colors.green[400] : Colors.green.shade700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: _isDarkMode ? Colors.grey[800] : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _border,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  children: details.entries
-                      .map((entry) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${entry.key}:',
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    color: _rowText,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    entry.value,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: _subtleTextColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ))
-                      .toList(),
-                ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.primaryColor,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 2,
-                ),
-                child: Text(
-                  'Done',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showErrorDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        elevation: 8,
-        backgroundColor: _dialogBackgroundColor,
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.0),
-            border: Border.all(
-              color: _dialogBorderColor,
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                  color: _isDarkMode
-                      ? Colors.red[800]!.withValues(alpha: 0.3)
-                      : Colors.red.shade50,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.error_rounded,
-                  color: _isDarkMode ? Colors.red[400] : Colors.red.shade600,
-                  size: 40,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: _isDarkMode ? Colors.red[400] : Colors.red.shade700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: 200,
-                ),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: _isDarkMode ? Colors.grey[800] : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: _border,
-                    width: 1,
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  child: Text(
-                    message,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: _subtleTextColor,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.primaryColor,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 2,
-                ),
-                child: Text(
-                  'Close',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _saveFile(List<int> bytes, String fileName) async {
-    try {
-      if (kIsWeb) {
-        final blob = html.Blob([bytes]);
-        final url = html.Url.createObjectUrlFromBlob(blob);
-        final anchor = html.AnchorElement(href: url)
-          ..setAttribute('download', fileName)
-          ..style.display = 'none';
-        html.document.body?.children.add(anchor);
-        anchor.click();
-        html.document.body?.children.remove(anchor);
-        html.Url.revokeObjectUrl(url);
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('File downloaded: $fileName'),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-      } else {
-        try {
-          final tempDir = await getTemporaryDirectory();
-          final filePath = '${tempDir.path}/$fileName';
-          final file = File(filePath);
-
-          await file.writeAsBytes(bytes);
-
-          if (mounted) {
-            await SharePlus.instance.share(
-              ShareParams(
-                files: [XFile(filePath)],
-                subject: 'Exported ${fileName.split('.').last} file',
-                text: 'Here is your exported data',
-              ),
-            );
-
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('File shared successfully'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            }
-          }
-        } catch (e) {
-          await _saveToDownloads(bytes, fileName);
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Error Saving File', 'Error: ${e.toString()}');
-      }
-    }
-  }
-
-  Future<void> _saveToDownloads(List<int> bytes, String fileName) async {
-    try {
-      Directory? directory;
-
-      if (Platform.isAndroid) {
-        var status = await Permission.storage.status;
-        if (!status.isGranted) {
-          status = await Permission.storage.request();
-          if (!status.isGranted) {
-            throw Exception('Storage permission not granted');
-          }
-        }
-
-        directory = Directory('/storage/emulated/0/Download');
-        if (!await directory.exists()) {
-          directory = await getApplicationDocumentsDirectory();
-        }
-      } else {
-        directory = await getApplicationDocumentsDirectory();
-      }
-
-      final filePath = '${directory.path}/$fileName';
-      final file = File(filePath);
-
-      await file.writeAsBytes(bytes);
-
-      if (mounted) {
-        _showSuccessDialog('File saved successfully!', {
-          'Location': filePath,
-          'Size': '${(bytes.length / 1024).toStringAsFixed(2)} KB',
-          'Type': fileName.split('.').last.toUpperCase(),
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Error Saving to Downloads', e.toString());
-      }
     }
   }
 
