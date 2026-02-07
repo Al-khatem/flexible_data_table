@@ -32,25 +32,17 @@ class UserModel {
 }
 
 class UserTableExample extends StatelessWidget {
-  final List<UserModel> users = [
-    UserModel(
-      id: 1,
+  final List<UserModel> users = List.generate(
+    100,
+    (index) => UserModel(
+      id: index + 1,
       name: 'John Doe',
       mobileNumber: '1234567890',
       email: 'john@example.com',
       isActive: true,
       registrationDate: DateTime.now().subtract(Duration(days: 1)),
     ),
-    UserModel(
-      id: 2,
-      name: 'Jane Smith',
-      mobileNumber: '0987654321',
-      email: 'jane@example.com',
-      isActive: false,
-      registrationDate: DateTime.now().subtract(Duration(days: 2)),
-    ),
-    // Add more users here
-  ];
+  );
 
   UserTableExample({super.key});
 
@@ -124,7 +116,7 @@ class UserTableExample extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
-          height: 550,
+          // height: 550,
           child: FlexibleDataTable<UserModel>(
             heading: _heading(isDark, primaryColor),
             isServerSide: false,

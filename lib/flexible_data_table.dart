@@ -112,7 +112,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.rowHeight = 50,
     this.headerHeight = 50,
     this.headerFontSize = 12,
-    this.pageSize = 10,
+    this.pageSize = 25,
     this.actionColumnFlex,
     this.headerTextColor,
     this.rowTextColor,
@@ -164,7 +164,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   String? _sortColumn;
   bool _sortAscending = true;
   int _currentPage = 0;
-  int _pageSize = 10;
+  int _pageSize = 25;
   String _searchQuery = '';
   int _effectiveTotalItems = 0;
   FlexibleDataTableType _currentTableType = FlexibleDataTableType.standard;
@@ -818,31 +818,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   }
 
   Widget _buildPagination() {
-    if (_isShowingAll) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Showing all $_effectiveTotalItems entries',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: _subtleTextColor,
-              ),
-            ),
-            Text(
-              'Page 1 of 1',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: _rowText,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     final totalPages = (_effectiveTotalItems / _pageSize).ceil();
     final startEntry = _currentPage * _pageSize + 1;
     final endEntry =
@@ -854,14 +829,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: 10,
         children: [
-          Text(
-            'Showing',
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              color: _subtleTextColor,
-            ),
-          ),
-          _buildPageSizeDropdown(),
           Text(
             'Showing $startEntry to $endEntry of $_effectiveTotalItems entries',
             style: GoogleFonts.poppins(
@@ -1836,9 +1803,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Widget _buildTopBar() {
     return Row(
       children: [
-        _buildPageSizeDropdown(),
-        const SizedBox(width: 16),
-        _buildExportButton(),
         if (widget.showTableTypeSelector) ...[
           const SizedBox(width: 16),
           _buildTableTypeSelector(),
@@ -2355,7 +2319,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     const int allItemsValue = -1;
     final List<dynamic> pageSizes = [5, 10, 25, 50, 100, allItemsValue];
 
-    const double dropdownWidth = 80;
+    const double dropdownWidth = 100;
 
     dynamic currentValue;
     if (_isShowingAll) {
@@ -2377,7 +2341,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       menuHeight: 305,
       width: dropdownWidth,
       menuStyle: MenuStyle(
-        elevation: const WidgetStatePropertyAll(3),
+        elevation: const WidgetStatePropertyAll(6),
         // backgroundColor: WidgetStatePropertyAll(
         //   appColors.dropDownfillColor,
         // ),
