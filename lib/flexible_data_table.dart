@@ -851,8 +851,17 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
+        spacing: 10,
         children: [
+          Text(
+            'Showing',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: _subtleTextColor,
+            ),
+          ),
+          _buildPageSizeDropdown(),
           Text(
             'Showing $startEntry to $endEntry of $_effectiveTotalItems entries',
             style: GoogleFonts.poppins(
@@ -860,6 +869,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               color: _subtleTextColor,
             ),
           ),
+          Spacer(),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -2363,7 +2373,27 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
     return DropdownMenu(
       initialSelection: currentValue,
+      enableSearch: false,
       menuHeight: 305,
+      width: dropdownWidth,
+      menuStyle: MenuStyle(
+        elevation: const WidgetStatePropertyAll(3),
+        // backgroundColor: WidgetStatePropertyAll(
+        //   appColors.dropDownfillColor,
+        // ),
+        visualDensity: VisualDensity.comfortable,
+        padding: const WidgetStatePropertyAll(
+          EdgeInsetsDirectional.zero,
+        ),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(4),
+              bottomRight: Radius.circular(4),
+            ),
+          ),
+        ),
+      ),
       dropdownMenuEntries: pageSizes.map((dynamic value) {
         return DropdownMenuEntry<dynamic>(
           value: value,
