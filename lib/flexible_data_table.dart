@@ -71,24 +71,19 @@ class FlexibleDataTable<T> extends StatefulWidget {
   final Function(T rowData)? onRowTap;
   final bool enableRowClick;
 
-  final Map<String,
-      String>? availableHeaders;
+  final Map<String, String>? availableHeaders;
   final List<String>? initialVisibleHeaders;
   final bool showHeaderSelector;
-  final Function(List<
-      String> visibleHeaders)? onHeaderVisibilityChanged;
+  final Function(List<String> visibleHeaders)? onHeaderVisibilityChanged;
   final String? headerSelectorTooltip;
 
-  final List<
-      String>? additionalSearchableFields;
+  final List<String>? additionalSearchableFields;
   final String? searchHint;
-
 
   final bool showSearchField;
   final bool allowSearchToggle;
 
-  final List<
-      Widget>? additionalTopBarWidgets;
+  final List<Widget>? additionalTopBarWidgets;
 
   const FlexibleDataTable({
     super.key,
@@ -127,7 +122,6 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.totalItems = 0,
     this.isServerSide = false,
     this.headers,
-
     this.tableType = FlexibleDataTableType.standard,
     this.stripedRowColor,
     this.cardElevation,
@@ -135,22 +129,17 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.cardBorderRadius,
     this.cardShadowColor,
     this.showTableTypeSelector = false,
-
     this.onRowTap,
     this.enableRowClick = true,
-
     this.availableHeaders,
     this.initialVisibleHeaders,
     this.showHeaderSelector = false,
     this.onHeaderVisibilityChanged,
     this.headerSelectorTooltip = 'Customize columns',
-
     this.additionalSearchableFields,
     this.searchHint,
-
     this.showSearchField = true,
     this.allowSearchToggle = true,
-
     this.additionalTopBarWidgets,
   });
 
@@ -162,12 +151,11 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   String _formatTitle(String raw) {
     return raw
         .replaceAll(RegExp(r'_v\d+_?[a-zA-Z]*'), '') // remove _v1_en
-        .replaceAll(RegExp(r'_'), ' ')              // _ → space
-        .replaceAll(RegExp(r'\s+'), ' ')            // extra spaces
+        .replaceAll(RegExp(r'_'), ' ') // _ → space
+        .replaceAll(RegExp(r'\s+'), ' ') // extra spaces
         .trim()
         .split(' ')
-        .map((w) =>
-    w.isEmpty ? w : w[0].toUpperCase() + w.substring(1))
+        .map((w) => w.isEmpty ? w : w[0].toUpperCase() + w.substring(1))
         .join(' ');
   }
 
@@ -196,10 +184,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   Map<String, dynamic>? _defaultHeaderMap;
 
-  bool get _isDarkMode =>
-      Theme
-          .of(context)
-          .brightness == Brightness.dark;
+  bool get _isDarkMode => Theme.of(context).brightness == Brightness.dark;
 
   Color get _surfaceColor => _isDarkMode ? Colors.grey[900]! : Colors.white;
 
@@ -219,23 +204,19 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   Color get _headerText =>
       widget.headerTextColor ??
-          (_isDarkMode ? Colors.grey[100]! : Colors.grey[800]!);
+      (_isDarkMode ? Colors.grey[100]! : Colors.grey[800]!);
 
   Color get _rowText =>
       widget.rowTextColor ??
-          (_isDarkMode ? Colors.grey[100]! : Colors.grey[800]!);
+      (_isDarkMode ? Colors.grey[100]! : Colors.grey[800]!);
 
   Color get _border =>
       widget.borderColor ??
-          (_isDarkMode ? Colors.grey[700]! : Colors.grey.shade300);
-
-  Color get _checkboxColor =>
-      widget.checkboxColor ??
-          (_isDarkMode ? widget.primaryColor : widget.primaryColor);
+      (_isDarkMode ? Colors.grey[700]! : Colors.grey.shade300);
 
   Color get _stripedColor =>
       widget.stripedRowColor ??
-          (_isDarkMode ? Colors.grey[500]! : Colors.grey.shade50);
+      (_isDarkMode ? Colors.grey[500]! : Colors.grey.shade50);
 
   Color get _subtleTextColor =>
       _isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
@@ -254,11 +235,11 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     ].request();
 
     if ((statuses[Permission.manageExternalStorage]!.isPermanentlyDenied ||
-        statuses[Permission.storage]!.isPermanentlyDenied ||
-        statuses[Permission.mediaLibrary]!.isPermanentlyDenied ||
-        statuses[Permission.accessMediaLocation]!.isPermanentlyDenied ||
-        statuses[Permission.photos]!.isPermanentlyDenied ||
-        statuses[Permission.camera]!.isPermanentlyDenied) &&
+            statuses[Permission.storage]!.isPermanentlyDenied ||
+            statuses[Permission.mediaLibrary]!.isPermanentlyDenied ||
+            statuses[Permission.accessMediaLocation]!.isPermanentlyDenied ||
+            statuses[Permission.photos]!.isPermanentlyDenied ||
+            statuses[Permission.camera]!.isPermanentlyDenied) &&
         Platform.isAndroid) {
       openAppSettings();
     }
@@ -274,7 +255,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     if (_defaultHeaderMap == null || _defaultHeaderMap!.isEmpty) {
       if (widget.data.isNotEmpty) {
         _defaultHeaderMap =
-        Map<String, dynamic>.from(widget.toTableDataMap(widget.data.first));
+            Map<String, dynamic>.from(widget.toTableDataMap(widget.data.first));
       }
     }
   }
@@ -303,8 +284,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     _filteredData = List.from(widget.data);
     _pageSize = widget.pageSize;
     _currentTableType = widget.tableType;
-    _isSearchFieldVisible =
-        widget.showSearchField;
+    _isSearchFieldVisible = widget.showSearchField;
     _setupScrollControllers();
     _updateEffectiveTotalItems();
     _updateDefaultHeaderMap();
@@ -324,7 +304,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       if (widget.availableHeaders != null &&
           widget.availableHeaders!.isNotEmpty) {
         _availableHeadersMap =
-        Map<String, String>.from(widget.availableHeaders!);
+            Map<String, String>.from(widget.availableHeaders!);
       } else {
         Map<String, dynamic> sourceMap = _getHeaderMap();
         _availableHeadersMap =
@@ -336,7 +316,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       setState(() {
         _preferencesLoaded = true;
       });
-
     } catch (e) {
       _setDefaultHeaders();
       setState(() {
@@ -391,9 +370,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   }
 
   void _updateEffectiveTotalItems() {
-    _effectiveTotalItems = widget.isServerSide
-        ? widget.totalItems
-        : _filteredData.length;
+    _effectiveTotalItems =
+        widget.isServerSide ? widget.totalItems : _filteredData.length;
   }
 
   @override
@@ -409,8 +387,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             final map = widget.toTableDataMap(item);
 
             bool foundInVisibleColumns = map.values.any(
-                  (value) =>
-              value?.toString().toLowerCase().contains(_searchQuery) ?? false,
+              (value) =>
+                  value?.toString().toLowerCase().contains(_searchQuery) ??
+                  false,
             );
 
             bool foundInAdditionalFields = false;
@@ -418,10 +397,13 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 widget.additionalSearchableFields!.isNotEmpty) {
               foundInAdditionalFields =
                   widget.additionalSearchableFields!.any((fieldKey) {
-                    final fieldValue = map[fieldKey];
-                    return fieldValue?.toString().toLowerCase().contains(
-                        _searchQuery) ?? false;
-                  });
+                final fieldValue = map[fieldKey];
+                return fieldValue
+                        ?.toString()
+                        .toLowerCase()
+                        .contains(_searchQuery) ??
+                    false;
+              });
             }
 
             return foundInVisibleColumns || foundInAdditionalFields;
@@ -447,11 +429,11 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   void _updateAvailableHeaders() {
     if (widget.availableHeaders != null &&
         widget.availableHeaders!.isNotEmpty) {
-      final newAvailableHeaders = Map<String, String>.from(
-          widget.availableHeaders!);
+      final newAvailableHeaders =
+          Map<String, String>.from(widget.availableHeaders!);
 
-      final validHeaders = _visibleHeaders.intersection(
-          newAvailableHeaders.keys.toSet());
+      final validHeaders =
+          _visibleHeaders.intersection(newAvailableHeaders.keys.toSet());
 
       setState(() {
         _availableHeadersMap = newAvailableHeaders;
@@ -473,8 +455,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         return null;
       case FlexibleDataTableType.modern:
         return TableBorder(
-          horizontalInside: BorderSide(
-              color: _border.withValues(alpha: 0.1), width: 1),
+          horizontalInside:
+              BorderSide(color: _border.withValues(alpha: 0.1), width: 1),
         );
       case FlexibleDataTableType.striped:
       case FlexibleDataTableType.compact:
@@ -482,8 +464,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           horizontalInside: BorderSide(
               color: _border.withValues(alpha: _isDarkMode ? 0.2 : 0.5)),
         );
-      default:
-        return null;
     }
   }
 
@@ -513,13 +493,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     switch (_currentTableType) {
       case FlexibleDataTableType.striped:
         if (_isDarkMode) {
-          return index % 2 == 0
-              ? Colors.black
-              : Colors.grey[900]!;
+          return index % 2 == 0 ? Colors.black : Colors.grey[900]!;
         } else {
-          return index % 2 == 0
-              ? Colors.white
-              : _stripedColor;
+          return index % 2 == 0 ? Colors.white : _stripedColor;
         }
       case FlexibleDataTableType.card:
         return null;
@@ -530,13 +506,12 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       case FlexibleDataTableType.modern:
         return index % 2 == 0
             ? _surfaceColor.withValues(alpha: 0.9)
-            : (_isDarkMode ? Colors.grey[800]!.withValues(alpha: 0.5) : Colors
-            .grey.shade50.withValues(alpha: 0.8));
+            : (_isDarkMode
+                ? Colors.grey[800]!.withValues(alpha: 0.5)
+                : Colors.grey.shade50.withValues(alpha: 0.8));
       case FlexibleDataTableType.compact:
         return _surfaceColor;
       case FlexibleDataTableType.bordered:
-        return _surfaceColor;
-      default:
         return _surfaceColor;
     }
   }
@@ -582,7 +557,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                     .asMap()
                     .entries
                     .map((entry) =>
-                    _buildTableRow(entry.value, headerMap, entry.key)).toList(),
+                        _buildTableRow(entry.value, headerMap, entry.key))
+                    .toList(),
               ),
             ),
           ),
@@ -603,8 +579,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Widget _buildEmptyState(Map<String, dynamic> headerMap, double tableWidth) {
     final List<Widget> emptyCells = [];
     int cellIndex = 0;
-    final totalCells = (widget.showCheckboxColumn ? 1 : 0) + headerMap.length +
-        1;
+    final totalCells =
+        (widget.showCheckboxColumn ? 1 : 0) + headerMap.length + 1;
 
     BoxDecoration? getCellDecoration(int currentIndex) {
       if (_currentTableType != FlexibleDataTableType.bordered) {
@@ -696,8 +672,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         children: pageData
             .asMap()
             .entries
-            .map((entry) =>
-            _buildCardRow(entry.value, headerMap, entry.key)).toList(),
+            .map((entry) => _buildCardRow(entry.value, headerMap, entry.key))
+            .toList(),
       ),
     );
   }
@@ -740,7 +716,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 ),
               ),
               const SizedBox(height: 12),
-
               if (widget.showCheckboxColumn) ...[
                 Row(
                   children: [
@@ -751,8 +726,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                             if (states.contains(WidgetState.selected)) {
                               return widget.primaryColor;
                             }
-                            return _isDarkMode ? Colors.grey[700] : Colors
-                                .grey[300];
+                            return _isDarkMode
+                                ? Colors.grey[700]
+                                : Colors.grey[300];
                           }),
                         ),
                       ),
@@ -773,7 +749,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 ),
                 const SizedBox(height: 8),
               ],
-
               ...headerMap.keys.map((key) {
                 final value = map[key];
                 final displayName = _availableHeadersMap[key] ?? key;
@@ -797,18 +772,17 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                         child: widget.cellBuilders?.containsKey(key) ?? false
                             ? widget.cellBuilders![key]!(value, item)
                             : Text(
-                          value?.toString() ?? '',
-                          style: GoogleFonts.poppins(
-                            fontSize: 13,
-                            color: _rowText,
-                          ),
-                        ),
+                                value?.toString() ?? '',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13,
+                                  color: _rowText,
+                                ),
+                              ),
                       ),
                     ],
                   ),
                 );
               }),
-
               ...[
                 const SizedBox(height: 12),
                 Container(
@@ -871,8 +845,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
     final totalPages = (_effectiveTotalItems / _pageSize).ceil();
     final startEntry = _currentPage * _pageSize + 1;
-    final endEntry = math.min(
-        (_currentPage + 1) * _pageSize, _effectiveTotalItems);
+    final endEntry =
+        math.min((_currentPage + 1) * _pageSize, _effectiveTotalItems);
 
     return Padding(
       padding: const EdgeInsets.only(top: 16),
@@ -895,8 +869,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               ),
               _buildPaginationButton(
                 icon: Icons.chevron_left,
-                onPressed: _currentPage > 0 ? () =>
-                    _changePage(_currentPage - 1) : null,
+                onPressed: _currentPage > 0
+                    ? () => _changePage(_currentPage - 1)
+                    : null,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -910,13 +885,15 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               ),
               _buildPaginationButton(
                 icon: Icons.chevron_right,
-                onPressed: _currentPage < totalPages - 1 ? () =>
-                    _changePage(_currentPage + 1) : null,
+                onPressed: _currentPage < totalPages - 1
+                    ? () => _changePage(_currentPage + 1)
+                    : null,
               ),
               _buildPaginationButton(
                 icon: Icons.last_page,
-                onPressed: _currentPage < totalPages - 1 ? () =>
-                    _changePage(totalPages - 1) : null,
+                onPressed: _currentPage < totalPages - 1
+                    ? () => _changePage(totalPages - 1)
+                    : null,
               ),
             ],
           ),
@@ -959,8 +936,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         final map = widget.toTableDataMap(item);
 
         bool foundInVisibleColumns = map.values.any(
-              (value) =>
-          value?.toString().toLowerCase().contains(_searchQuery) ?? false,
+          (value) =>
+              value?.toString().toLowerCase().contains(_searchQuery) ?? false,
         );
 
         bool foundInAdditionalFields = false;
@@ -968,10 +945,13 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             widget.additionalSearchableFields!.isNotEmpty) {
           foundInAdditionalFields =
               widget.additionalSearchableFields!.any((fieldKey) {
-                final fieldValue = map[fieldKey];
-                return fieldValue?.toString().toLowerCase().contains(
-                    _searchQuery) ?? false;
-              });
+            final fieldValue = map[fieldKey];
+            return fieldValue
+                    ?.toString()
+                    .toLowerCase()
+                    .contains(_searchQuery) ??
+                false;
+          });
         }
 
         return foundInVisibleColumns || foundInAdditionalFields;
@@ -1055,73 +1035,70 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
     final double totalColumnWidth = _calculateTotalWidth(headerMap);
 
-    return LayoutBuilder(
-        builder: (context, constraints) {
-          final double availableWidth = constraints.maxWidth;
-          final double requestedMinWidth = widget.minWidth ?? 0;
+    return LayoutBuilder(builder: (context, constraints) {
+      final double availableWidth = constraints.maxWidth;
+      final double requestedMinWidth = widget.minWidth ?? 0;
 
-          final double tableWidth = math.max(
-              totalColumnWidth,
-              math.max(availableWidth, requestedMinWidth)
-          );
+      final double tableWidth = math.max(
+          totalColumnWidth, math.max(availableWidth, requestedMinWidth));
 
-          if (_currentTableType == FlexibleDataTableType.card) {
-            return Container(
-              decoration: _getContainerDecoration(),
-              child: _buildTableBody(headerMap, tableWidth),
-            );
-          }
+      if (_currentTableType == FlexibleDataTableType.card) {
+        return Container(
+          decoration: _getContainerDecoration(),
+          child: _buildTableBody(headerMap, tableWidth),
+        );
+      }
 
-          final needsHorizontalScroll = tableWidth > availableWidth;
+      final needsHorizontalScroll = tableWidth > availableWidth;
 
-          final tableContent = Container(
-            decoration: _getContainerDecoration(),
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  controller: _headerScrollController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  child: SizedBox(
-                    width: tableWidth,
-                    height: widget.headerHeight,
-                    child: Table(
-                      columnWidths: _buildColumnWidths(headerMap),
-                      children: [
-                        TableRow(
-                          decoration: _getHeaderDecoration(),
-                          children: _buildHeaderCells(headerMap).map((cell) =>
-                              SizedBox(height: widget.headerHeight, child: cell)
-                          ).toList(),
-                        ),
-                      ],
+      final tableContent = Container(
+        decoration: _getContainerDecoration(),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: _headerScrollController,
+              physics: const NeverScrollableScrollPhysics(),
+              child: SizedBox(
+                width: tableWidth,
+                height: widget.headerHeight,
+                child: Table(
+                  columnWidths: _buildColumnWidths(headerMap),
+                  children: [
+                    TableRow(
+                      decoration: _getHeaderDecoration(),
+                      children: _buildHeaderCells(headerMap)
+                          .map((cell) => SizedBox(
+                              height: widget.headerHeight, child: cell))
+                          .toList(),
                     ),
-                  ),
+                  ],
                 ),
-                Expanded(
-                  child: _buildTableBodyWithoutScrollbar(headerMap, tableWidth),
-                ),
-              ],
+              ),
             ),
-          );
+            Expanded(
+              child: _buildTableBodyWithoutScrollbar(headerMap, tableWidth),
+            ),
+          ],
+        ),
+      );
 
-          if (needsHorizontalScroll) {
-            return Scrollbar(
-              controller: _horizontalScrollController,
-              thumbVisibility: false,
-              trackVisibility: false,
-              interactive: true,
-              child: tableContent,
-            );
-          } else {
-            return tableContent;
-          }
-        }
-    );
+      if (needsHorizontalScroll) {
+        return Scrollbar(
+          controller: _horizontalScrollController,
+          thumbVisibility: false,
+          trackVisibility: false,
+          interactive: true,
+          child: tableContent,
+        );
+      } else {
+        return tableContent;
+      }
+    });
   }
 
-  Widget _buildTableBodyWithoutScrollbar(Map<String, dynamic> headerMap,
-      double tableWidth) {
+  Widget _buildTableBodyWithoutScrollbar(
+      Map<String, dynamic> headerMap, double tableWidth) {
     if (_filteredData.isEmpty) {
       return _buildEmptyStateWithoutScrollbar(headerMap, tableWidth);
     }
@@ -1149,12 +1126,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             border: _getTableBorder(),
             columnWidths: _buildColumnWidths(headerMap),
-            children: pageData
-                .asMap()
-                .entries
-                .map((entry) {
-              final tableRow = _buildTableRow(
-                  entry.value, headerMap, entry.key);
+            children: pageData.asMap().entries.map((entry) {
+              final tableRow =
+                  _buildTableRow(entry.value, headerMap, entry.key);
 
               if (widget.enableRowClick && widget.onRowTap != null) {
                 final wrappedChildren = tableRow.children.map((cell) {
@@ -1180,12 +1154,12 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     );
   }
 
-  Widget _buildEmptyStateWithoutScrollbar(Map<String, dynamic> headerMap,
-      double tableWidth) {
+  Widget _buildEmptyStateWithoutScrollbar(
+      Map<String, dynamic> headerMap, double tableWidth) {
     final List<Widget> emptyCells = [];
     int cellIndex = 0;
-    final totalCells = (widget.showCheckboxColumn ? 1 : 0) + headerMap.length +
-        1;
+    final totalCells =
+        (widget.showCheckboxColumn ? 1 : 0) + headerMap.length + 1;
 
     BoxDecoration? getCellDecoration(int currentIndex) {
       if (_currentTableType != FlexibleDataTableType.bordered) {
@@ -1261,8 +1235,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       if (_headerScrollController.hasClients &&
           _headerScrollController.position.pixels !=
               _horizontalScrollController.position.pixels) {
-        _headerScrollController.jumpTo(
-            _horizontalScrollController.position.pixels);
+        _headerScrollController
+            .jumpTo(_horizontalScrollController.position.pixels);
       }
     });
 
@@ -1270,8 +1244,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       if (_horizontalScrollController.hasClients &&
           _horizontalScrollController.position.pixels !=
               _headerScrollController.position.pixels) {
-        _horizontalScrollController.jumpTo(
-            _headerScrollController.position.pixels);
+        _horizontalScrollController
+            .jumpTo(_headerScrollController.position.pixels);
       }
     });
   }
@@ -1288,8 +1262,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Widget _buildErrorDisplay(String message) {
     return Card(
       elevation: 0,
-      color: _isDarkMode ? Colors.red[900]!.withValues(alpha: 0.3) : Colors.red
-          .shade50,
+      color: _isDarkMode
+          ? Colors.red[900]!.withValues(alpha: 0.3)
+          : Colors.red.shade50,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
@@ -1313,8 +1288,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: _isDarkMode ? Colors.red[400] : Colors.red
-                          .shade700,
+                      color:
+                          _isDarkMode ? Colors.red[400] : Colors.red.shade700,
                     ),
                   ),
                 ),
@@ -1344,7 +1319,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           : 0,
       shadowColor: _currentTableType == FlexibleDataTableType.modern
           ? (widget.cardShadowColor ??
-          (_isDarkMode ? Colors.black38 : Colors.grey.shade400))
+              (_isDarkMode ? Colors.black38 : Colors.grey.shade400))
           : null,
       color: _cardBackgroundColor,
       shape: RoundedRectangleBorder(
@@ -1370,15 +1345,16 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             if (validationError != null)
               Expanded(
                   child: Center(child: _buildErrorDisplay(validationError)))
-            else
-              ...[
-                _buildTopBar(),
-                const SizedBox(height: 16),
-                Expanded(child: AppStackLoader(visible: widget.isLoading,
-                    loader: widget.loader,
-                    child: _buildTable())),
-                if (_filteredData.isNotEmpty) _buildPagination(),
-              ],
+            else ...[
+              _buildTopBar(),
+              const SizedBox(height: 16),
+              Expanded(
+                  child: AppStackLoader(
+                      visible: widget.isLoading,
+                      loader: widget.loader,
+                      child: _buildTable())),
+              if (_filteredData.isNotEmpty) _buildPagination(),
+            ],
           ],
         ),
       ),
@@ -1422,8 +1398,9 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             ),
           ],
           border: Border.all(
-            color: _isDarkMode ? Colors.white.withValues(alpha: 0.1) : Colors
-                .black.withValues(alpha: 0.05),
+            color: _isDarkMode
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
             width: 1,
           ),
         );
@@ -1446,11 +1423,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         );
       case FlexibleDataTableType.card:
         return BoxDecoration(
-          color: _surfaceColor,
-        );
-      default:
-        return BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
           color: _surfaceColor,
         );
     }
@@ -1518,8 +1490,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   TableRow _buildTableRow(T item, Map<String, dynamic> headerMap, int index) {
     final cells = <Widget>[];
     int cellIndex = 0;
-    final totalCells = (widget.showCheckboxColumn ? 1 : 0) + headerMap.length +
-        1;
+    final totalCells =
+        (widget.showCheckboxColumn ? 1 : 0) + headerMap.length + 1;
 
     BoxDecoration? getCellDecoration(int currentIndex) {
       if (_currentTableType != FlexibleDataTableType.bordered) {
@@ -1578,14 +1550,14 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           child: widget.cellBuilders?.containsKey(key) ?? false
               ? widget.cellBuilders![key]!(value, item)
               : Text(
-            value?.toString() ?? '',
-            style: GoogleFonts.poppins(
-              fontSize: _currentTableType == FlexibleDataTableType.compact
-                  ? 12
-                  : 13,
-              color: _rowText,
-            ),
-          ),
+                  value?.toString() ?? '',
+                  style: GoogleFonts.poppins(
+                    fontSize: _currentTableType == FlexibleDataTableType.compact
+                        ? 12
+                        : 13,
+                    color: _rowText,
+                  ),
+                ),
         ),
       );
       cellIndex++;
@@ -1642,16 +1614,14 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         );
       case FlexibleDataTableType.bordered:
         return null;
-      default:
-        return null;
     }
   }
 
   List<Widget> _buildHeaderCells(Map<String, dynamic> headerMap) {
     final cells = <Widget>[];
     int cellIndex = 0;
-    final totalCells = (widget.showCheckboxColumn ? 1 : 0) + headerMap.length +
-        1;
+    final totalCells =
+        (widget.showCheckboxColumn ? 1 : 0) + headerMap.length + 1;
 
     BoxDecoration? getHeaderCellDecoration(int currentIndex) {
       if (_currentTableType != FlexibleDataTableType.bordered) {
@@ -1686,17 +1656,19 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           child: Checkbox(
             value: widget.selectedItems?.length == widget.data.length &&
                 widget.data.isNotEmpty,
-            onChanged: widget.data.isEmpty ? null : (value) {
-              if (value == true) {
-                for (var item in widget.data) {
-                  widget.onSelectItem?.call(true, item);
-                }
-              } else {
-                for (var item in widget.data) {
-                  widget.onSelectItem?.call(false, item);
-                }
-              }
-            },
+            onChanged: widget.data.isEmpty
+                ? null
+                : (value) {
+                    if (value == true) {
+                      for (var item in widget.data) {
+                        widget.onSelectItem?.call(true, item);
+                      }
+                    } else {
+                      for (var item in widget.data) {
+                        widget.onSelectItem?.call(false, item);
+                      }
+                    }
+                  },
           ),
         ),
       ));
@@ -1708,28 +1680,26 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         cells.add(Container(
           height: widget.headerHeight,
           padding: EdgeInsets.symmetric(
-              horizontal: _currentTableType == FlexibleDataTableType.compact
-                  ? 8
-                  : 16),
+              horizontal:
+                  _currentTableType == FlexibleDataTableType.compact ? 8 : 16),
           decoration: getHeaderCellDecoration(cellIndex),
           child: widget.customHeaderBuilders![key]!(key),
         ));
       } else {
-        Color headerTextColor = _currentTableType ==
-            FlexibleDataTableType.modern
-            ? Colors.white
-            : (_currentTableType == FlexibleDataTableType.minimal
-            ? _headerText.withValues(alpha: 0.8)
-            : _headerText);
+        Color headerTextColor =
+            _currentTableType == FlexibleDataTableType.modern
+                ? Colors.white
+                : (_currentTableType == FlexibleDataTableType.minimal
+                    ? _headerText.withValues(alpha: 0.8)
+                    : _headerText);
 
         final displayName = _availableHeadersMap[key] ?? key;
 
         cells.add(Container(
           height: widget.headerHeight,
           padding: EdgeInsets.symmetric(
-              horizontal: _currentTableType == FlexibleDataTableType.compact
-                  ? 8
-                  : 16),
+              horizontal:
+                  _currentTableType == FlexibleDataTableType.compact ? 8 : 16),
           decoration: getHeaderCellDecoration(cellIndex),
           child: Row(
             children: [
@@ -1738,15 +1708,14 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 style: GoogleFonts.poppins(
                     color: headerTextColor,
                     fontWeight: _currentTableType ==
-                        FlexibleDataTableType.modern
+                            FlexibleDataTableType.modern
                         ? FontWeight.w600
                         : (_currentTableType == FlexibleDataTableType.minimal
-                        ? FontWeight.w400
-                        : FontWeight.w500),
+                            ? FontWeight.w400
+                            : FontWeight.w500),
                     fontSize: _currentTableType == FlexibleDataTableType.compact
                         ? widget.headerFontSize - 1
-                        : widget.headerFontSize
-                ),
+                        : widget.headerFontSize),
               ),
               if (widget.isSort && widget.data.isNotEmpty)
                 InkWell(
@@ -1754,8 +1723,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                   child: Icon(
                     _sortColumn == key
                         ? _sortAscending
-                        ? Icons.arrow_upward
-                        : Icons.arrow_downward
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward
                         : Icons.sort,
                     color: headerTextColor,
                     size: _currentTableType == FlexibleDataTableType.compact
@@ -1770,19 +1739,18 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       cellIndex++;
     }
 
-    Color actionHeaderTextColor = _currentTableType ==
-        FlexibleDataTableType.modern
-        ? Colors.white
-        : (_currentTableType == FlexibleDataTableType.minimal
-        ? _headerText.withValues(alpha: 0.8)
-        : _headerText);
+    Color actionHeaderTextColor =
+        _currentTableType == FlexibleDataTableType.modern
+            ? Colors.white
+            : (_currentTableType == FlexibleDataTableType.minimal
+                ? _headerText.withValues(alpha: 0.8)
+                : _headerText);
 
     cells.add(Container(
       height: widget.headerHeight,
       padding: EdgeInsets.symmetric(
-          horizontal: _currentTableType == FlexibleDataTableType.compact
-              ? 8
-              : 14),
+          horizontal:
+              _currentTableType == FlexibleDataTableType.compact ? 8 : 14),
       decoration: getHeaderCellDecoration(cellIndex),
       child: Center(
         child: Text(
@@ -1792,12 +1760,11 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               fontWeight: _currentTableType == FlexibleDataTableType.modern
                   ? FontWeight.w600
                   : (_currentTableType == FlexibleDataTableType.minimal
-                  ? FontWeight.w400
-                  : FontWeight.w500),
+                      ? FontWeight.w400
+                      : FontWeight.w500),
               fontSize: _currentTableType == FlexibleDataTableType.compact
                   ? widget.headerFontSize - 1
-                  : widget.headerFontSize
-          ),
+                  : widget.headerFontSize),
         ),
       ),
     ));
@@ -1877,11 +1844,12 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         if (widget.additionalTopBarWidgets != null &&
             widget.additionalTopBarWidgets!.isNotEmpty) ...[
           const SizedBox(width: 16),
-          ...widget.additionalTopBarWidgets!.expand((widget) =>
-          [
-            widget,
-            const SizedBox(width: 12),
-          ]).toList()
+          ...widget.additionalTopBarWidgets!
+              .expand((widget) => [
+                    widget,
+                    const SizedBox(width: 12),
+                  ])
+              .toList()
             ..removeLast(),
         ],
         const Spacer(),
@@ -1934,8 +1902,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 ),
                 const SizedBox(width: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     color: widget.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
@@ -1959,9 +1927,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   Widget _buildSearchToggleButton() {
     return Tooltip(
-      message: _isSearchFieldVisible
-          ? 'Hide search field'
-          : 'Show search field',
+      message:
+          _isSearchFieldVisible ? 'Hide search field' : 'Show search field',
       child: Container(
         height: 40,
         decoration: BoxDecoration(
@@ -2004,9 +1971,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: _isSearchFieldVisible
-                        ? widget.primaryColor
-                        : _rowText,
+                    color:
+                        _isSearchFieldVisible ? widget.primaryColor : _rowText,
                   ),
                 ),
               ],
@@ -2062,11 +2028,11 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           onApply: (newVisibleHeaders) async {
             await _handleHeaderVisibilityChange(newVisibleHeaders);
 
-            if (mounted) {
+            if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Table columns updated (${newVisibleHeaders
-                      .length} visible)'),
+                  content: Text(
+                      'Table columns updated (${newVisibleHeaders.length} visible)'),
                   backgroundColor: widget.primaryColor,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
@@ -2215,8 +2181,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             ],
           ),
         ),
-        itemBuilder: (context) =>
-        [
+        itemBuilder: (context) => [
           PopupMenuItem(
             height: 36,
             value: 'excel',
@@ -2228,14 +2193,14 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: _isDarkMode ? Colors.green[800] : Colors.green
-                        .shade100,
+                    color:
+                        _isDarkMode ? Colors.green[800] : Colors.green.shade100,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Icon(
                     Icons.table_chart_rounded,
-                    color: _isDarkMode ? Colors.green[300] : Colors.green
-                        .shade700,
+                    color:
+                        _isDarkMode ? Colors.green[300] : Colors.green.shade700,
                     size: 14,
                   ),
                 ),
@@ -2323,15 +2288,15 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             color: _subtleTextColor,
           ),
           suffixIcon: widget.additionalSearchableFields != null &&
-              widget.additionalSearchableFields!.isNotEmpty
+                  widget.additionalSearchableFields!.isNotEmpty
               ? Tooltip(
-            message: 'Searches in: ${_getSearchableFieldsTooltip()}',
-            child: Icon(
-              Icons.info_outline,
-              color: _subtleTextColor,
-              size: 16,
-            ),
-          )
+                  message: 'Searches in: ${_getSearchableFieldsTooltip()}',
+                  child: Icon(
+                    Icons.info_outline,
+                    color: _subtleTextColor,
+                    size: 16,
+                  ),
+                )
               : null,
           filled: true,
           fillColor: _surfaceColor,
@@ -2370,8 +2335,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     }
 
     if (searchableFields.length > 6) {
-      return '${searchableFields.take(6).join(', ')} and ${searchableFields
-          .length - 6} more...';
+      return '${searchableFields.take(6).join(', ')} and ${searchableFields.length - 6} more...';
     }
 
     return searchableFields.join(', ');
@@ -2393,9 +2357,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         currentValue = pageSizes
             .where((size) => size != allItemsValue && size is int)
             .reduce((a, b) =>
-        (_pageSize - a).abs() < (_pageSize - b).abs()
-            ? a
-            : b);
+                (_pageSize - a).abs() < (_pageSize - b).abs() ? a : b);
       }
     }
 
@@ -2432,121 +2394,72 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8, right: 2),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<dynamic>(
-                      isExpanded: true,
-                      value: currentValue,
-                      isDense: true,
-                      dropdownColor: _surfaceColor,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: widget.primaryColor,
-                        size: 20,
-                      ),
-                      iconSize: 20,
-                      underline: Container(),
-                      selectedItemBuilder: (context) {
-                        return pageSizes.map<Widget>((dynamic value) {
-                          return Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              value == allItemsValue ? "All" : "$value",
-                              style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: widget.primaryColor,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList();
-                      },
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(8),
-                      style: GoogleFonts.poppins(
-                        color: _rowText,
-                        fontSize: 13,
-                      ),
-                      alignment: AlignmentDirectional.centerStart,
-                      menuMaxHeight: 305,
-                      items: pageSizes.map((dynamic value) {
-                        bool isSelected = currentValue == value;
-                        return DropdownMenuItem<dynamic>(
-                          value: value,
-                          child: IntrinsicHeight(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 6),
-                              constraints: const BoxConstraints(
-                                minHeight: 30,
-                                maxHeight: 30,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 6,
-                                    height: 6,
-                                    margin: const EdgeInsets.only(right: 6),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: isSelected
-                                          ? widget.primaryColor
-                                          : Colors.transparent,
-                                      border: isSelected
-                                          ? null
-                                          : Border.all(
-                                          color: _subtleTextColor, width: 1),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      value == allItemsValue ? "All" : "$value",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 13,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w400,
-                                        color: isSelected
-                                            ? widget.primaryColor
-                                            : _rowText,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            if (value == allItemsValue) {
-                              _isShowingAll = true;
+                  child: DropdownMenu(
+                    // isExpanded: true,
+                    initialSelection: currentValue,
+                    // isDense: true,
+                    // dropdownColor: _surfaceColor,
+                    // icon: Icon(
+                    //   Icons.arrow_drop_down,
+                    //   color: widget.primaryColor,
+                    //   size: 20,
+                    // ),
+                    // iconSize: 20,
+                    // underline: Container(),
+                    // selectedItemBuilder: (context) {
+                    //   return pageSizes.map<Widget>((dynamic value) {
+                    //     return Align(
+                    //       alignment: Alignment.centerLeft,
+                    //       child: Text(
+                    //         value == allItemsValue ? "All" : "$value",
+                    //         style: GoogleFonts.poppins(
+                    //           fontSize: 13,
+                    //           fontWeight: FontWeight.w500,
+                    //           color: widget.primaryColor,
+                    //         ),
+                    //         overflow: TextOverflow.ellipsis,
+                    //       ),
+                    //     );
+                    //   }).toList();
+                    // },
+                    // elevation: 4,
+                    // borderRadius: BorderRadius.circular(8),
+                    // style: GoogleFonts.poppins(
+                    //   color: _rowText,
+                    //   fontSize: 13,
+                    // ),
+                    // alignment: AlignmentDirectional.centerStart,
+                    menuHeight: 305,
+                    dropdownMenuEntries: pageSizes.map((dynamic value) {
+                      // bool isSelected = currentValue == value;
+                      return DropdownMenuEntry<dynamic>(
+                        value: value,
+                        label: value == allItemsValue ? "All" : "$value",
+                      );
+                    }).toList(),
+                    onSelected: (value) {
+                      if (value != null) {
+                        setState(() {
+                          if (value == allItemsValue) {
+                            _isShowingAll = true;
 
-                              if (widget.isServerSide) {
-                                _pageSize = math.max(widget.totalItems, 1);
-                              }
-
-                              _currentPage = 0;
-
-                            } else {
-                              _isShowingAll = false;
-                              _pageSize = value as int;
-                              _currentPage = 0;
+                            if (widget.isServerSide) {
+                              _pageSize = math.max(widget.totalItems, 1);
                             }
-                          });
 
-                          if (widget.isServerSide) {
-                            widget.onPageChanged?.call(1, _pageSize);
+                            _currentPage = 0;
+                          } else {
+                            _isShowingAll = false;
+                            _pageSize = value as int;
+                            _currentPage = 0;
                           }
+                        });
+
+                        if (widget.isServerSide) {
+                          widget.onPageChanged?.call(1, _pageSize);
                         }
-                      },
-                    ),
+                      }
+                    },
                   ),
                 ),
               ),
@@ -2560,8 +2473,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Future<void> _exportToExcel() async {
     await _showProgressDialogWithTimeout('Generating Excel file...', () async {
       final workbook = excel.Excel.createExcel();
-      final sheet =
-      workbook.sheets[workbook.getDefaultSheet() ?? 'Sheet1'];
+      final sheet = workbook.sheets[workbook.getDefaultSheet() ?? 'Sheet1'];
       if (sheet == null) throw Exception('Failed to create sheet');
 
       final headerMap = _getVisibleHeaderMap();
@@ -2603,8 +2515,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       final totalCell = sheet.cell(
         excel.CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 1),
       );
-      totalCell.value =
-          excel.TextCellValue('Total Records: $totalRecords');
+      totalCell.value = excel.TextCellValue('Total Records: $totalRecords');
       totalCell.cellStyle = excel.CellStyle(
         bold: true,
         fontSize: 12,
@@ -2632,8 +2543,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             rowIndex: headerRowIndex,
           ),
         );
-        cell.value =
-            excel.TextCellValue(_availableHeadersMap[key] ?? key);
+        cell.value = excel.TextCellValue(_availableHeadersMap[key] ?? key);
         cell.cellStyle = excel.CellStyle(bold: true);
         columnIndex++;
       }
@@ -2673,7 +2583,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       await _saveFile(bytes, '${widget.fileName}.xlsx');
     });
   }
-
 
 // Add this helper method in your FlexibleDataTableState class
   String _extractCellValue(dynamic value) {
@@ -2723,22 +2632,17 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Map<String, dynamic> _getHeaderMap() {
     if (widget.headers != null && widget.headers!.isNotEmpty) {
       return Map<String, dynamic>.from(widget.headers!);
-    }
-    else if (widget.data.isNotEmpty) {
+    } else if (widget.data.isNotEmpty) {
       return Map<String, dynamic>.from(
           widget.toTableDataMap(widget.data.first));
-    }
-    else if (_defaultHeaderMap != null && _defaultHeaderMap!.isNotEmpty) {
+    } else if (_defaultHeaderMap != null && _defaultHeaderMap!.isNotEmpty) {
       return _defaultHeaderMap!;
-    }
-    else if (widget.customHeaderBuilders != null &&
+    } else if (widget.customHeaderBuilders != null &&
         widget.customHeaderBuilders!.isNotEmpty) {
       return Map<String, dynamic>.fromIterable(
           widget.customHeaderBuilders!.keys,
-          value: (_) => null
-      );
-    }
-    else {
+          value: (_) => null);
+    } else {
       return {'ID': null, 'Name': null, 'Description': null};
     }
   }
@@ -2761,13 +2665,12 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             // ===== TITLE =====
             pw.Center(
                 child: pw.Text(
-                  title,
-                  style: pw.TextStyle(
-                    fontSize: 20,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                )
-            ),
+              title,
+              style: pw.TextStyle(
+                fontSize: 20,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            )),
 
             pw.SizedBox(height: 6),
 
@@ -2803,20 +2706,18 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
               ),
               cellAlignment: pw.Alignment.centerLeft,
               cellHeight: 22,
-
               headers: [
                 'S.No',
                 ...headerMap.keys.map(
-                      (key) => _availableHeadersMap[key] ?? key,
+                  (key) => _availableHeadersMap[key] ?? key,
                 ),
               ],
-
               data: _filteredData.asMap().entries.map((entry) {
                 final rowMap = widget.toTableDataMap(entry.value);
                 return [
                   (entry.key + 1).toString(),
                   ...headerMap.keys.map(
-                        (key) => _extractCellValue(rowMap[key]),
+                    (key) => _extractCellValue(rowMap[key]),
                   ),
                 ];
               }).toList(),
@@ -2830,9 +2731,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     });
   }
 
-
-  Future<void> _showProgressDialogWithTimeout(String message,
-      Future<void> Function() operation) async {
+  Future<void> _showProgressDialogWithTimeout(
+      String message, Future<void> Function() operation) async {
     bool needToDismiss = true;
     bool operationComplete = false;
 
@@ -2969,8 +2869,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                       shape: BoxShape.circle,
                     ),
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          widget.primaryColor),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(widget.primaryColor),
                       strokeWidth: 3,
                     ),
                   ),
@@ -3008,66 +2908,65 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   void _showSuccessDialog(String title, Map<String, String> details) {
     showDialog(
       context: context,
-      builder: (context) =>
-          Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        elevation: 8,
+        backgroundColor: _dialogBackgroundColor,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            border: Border.all(
+              color: _dialogBorderColor,
+              width: 1,
             ),
-            elevation: 8,
-            backgroundColor: _dialogBackgroundColor,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                border: Border.all(
-                  color: _dialogBorderColor,
-                  width: 1,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  color: _isDarkMode
+                      ? Colors.green[800]!.withValues(alpha: 0.3)
+                      : Colors.green.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle_rounded,
+                  color:
+                      _isDarkMode ? Colors.green[400] : Colors.green.shade600,
+                  size: 40,
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.green[800]!.withValues(
-                          alpha: 0.3) : Colors.green.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.check_circle_rounded,
-                      color: _isDarkMode ? Colors.green[400] : Colors.green
-                          .shade600,
-                      size: 40,
-                    ),
+              const SizedBox(height: 24),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color:
+                      _isDarkMode ? Colors.green[400] : Colors.green.shade700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: _isDarkMode ? Colors.grey[800] : Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _border,
+                    width: 1,
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: _isDarkMode ? Colors.green[400] : Colors.green
-                          .shade700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.grey[800] : Colors.grey
-                          .shade100,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: _border,
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: details.entries.map((entry) =>
-                          Padding(
+                ),
+                child: Column(
+                  children: details.entries
+                      .map((entry) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -3092,135 +2991,133 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
                                 ),
                               ],
                             ),
-                          )).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: widget.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      'Done',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
+                          ))
+                      .toList(),
+                ),
               ),
-            ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: widget.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 2,
+                ),
+                child: Text(
+                  'Done',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
+      ),
     );
   }
 
   void _showErrorDialog(String title, String message) {
     showDialog(
       context: context,
-      builder: (context) =>
-          Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            elevation: 8,
-            backgroundColor: _dialogBackgroundColor,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                border: Border.all(
-                  color: _dialogBorderColor,
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.red[800]!.withValues(
-                          alpha: 0.3) : Colors.red.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.error_rounded,
-                      color: _isDarkMode ? Colors.red[400] : Colors.red
-                          .shade600,
-                      size: 40,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: _isDarkMode ? Colors.red[400] : Colors.red
-                          .shade700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: 200,
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: _isDarkMode ? Colors.grey[800] : Colors.grey
-                          .shade100,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: _border,
-                        width: 1,
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Text(
-                        message,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: _subtleTextColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: widget.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: Text(
-                      'Close',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        elevation: 8,
+        backgroundColor: _dialogBackgroundColor,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.0),
+            border: Border.all(
+              color: _dialogBorderColor,
+              width: 1,
             ),
           ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  color: _isDarkMode
+                      ? Colors.red[800]!.withValues(alpha: 0.3)
+                      : Colors.red.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.error_rounded,
+                  color: _isDarkMode ? Colors.red[400] : Colors.red.shade600,
+                  size: 40,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: _isDarkMode ? Colors.red[400] : Colors.red.shade700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: 200,
+                ),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: _isDarkMode ? Colors.grey[800] : Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: _border,
+                    width: 1,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    message,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: _subtleTextColor,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: widget.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  elevation: 2,
+                ),
+                child: Text(
+                  'Close',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -3255,12 +3152,12 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           await file.writeAsBytes(bytes);
 
           if (mounted) {
-            await Share.shareXFiles(
-              [XFile(filePath)],
-              subject: 'Exported ${fileName
-                  .split('.')
-                  .last} file',
-              text: 'Here is your exported data',
+            await SharePlus.instance.share(
+              ShareParams(
+                files: [XFile(filePath)],
+                subject: 'Exported ${fileName.split('.').last} file',
+                text: 'Here is your exported data',
+              ),
             );
 
             if (mounted) {
@@ -3313,10 +3210,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
         _showSuccessDialog('File saved successfully!', {
           'Location': filePath,
           'Size': '${(bytes.length / 1024).toStringAsFixed(2)} KB',
-          'Type': fileName
-              .split('.')
-              .last
-              .toUpperCase(),
+          'Type': fileName.split('.').last.toUpperCase(),
         });
       }
     } catch (e) {
@@ -3365,8 +3259,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   /// Manually set visible headers (with persistence)
   Future<void> setVisibleHeaders(List<String> headers) async {
-    final validHeaders = headers.where((h) =>
-        _availableHeadersMap.containsKey(h)).toSet();
+    final validHeaders =
+        headers.where((h) => _availableHeadersMap.containsKey(h)).toSet();
     if (validHeaders.isNotEmpty) {
       await _handleHeaderVisibilityChange(validHeaders);
     }
@@ -3508,7 +3402,6 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
               ],
             ),
             const SizedBox(height: 16),
-
             Text(
               'Select which columns to display in the table',
               style: GoogleFonts.poppins(
@@ -3517,14 +3410,13 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
               ),
             ),
             const SizedBox(height: 20),
-
             Row(
               children: [
                 TextButton.icon(
                   onPressed: () {
                     setState(() {
                       _tempVisibleHeaders =
-                      Set<String>.from(widget.availableHeaders.keys);
+                          Set<String>.from(widget.availableHeaders.keys);
                     });
                   },
                   icon: Icon(
@@ -3562,15 +3454,14 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: widget.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${_tempVisibleHeaders.length}/${widget.availableHeaders
-                        .length}',
+                    '${_tempVisibleHeaders.length}/${widget.availableHeaders.length}',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -3581,7 +3472,6 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
               ],
             ),
             const SizedBox(height: 12),
-
             Container(
               constraints: const BoxConstraints(maxHeight: 300),
               child: SingleChildScrollView(
@@ -3607,8 +3497,8 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           checkboxTheme: CheckboxThemeData(
-                            fillColor: WidgetStateProperty.resolveWith((
-                                states) {
+                            fillColor:
+                                WidgetStateProperty.resolveWith((states) {
                               if (states.contains(WidgetState.selected)) {
                                 return widget.primaryColor;
                               }
@@ -3624,20 +3514,22 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
                             displayName,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
-                              fontWeight: isVisible
-                                  ? FontWeight.w500
-                                  : FontWeight.w400,
-                              color: isVisible ? widget.primaryColor : widget
-                                  .rowTextColor,
+                              fontWeight:
+                                  isVisible ? FontWeight.w500 : FontWeight.w400,
+                              color: isVisible
+                                  ? widget.primaryColor
+                                  : widget.rowTextColor,
                             ),
                           ),
-                          subtitle: key != displayName ? Text(
-                            key,
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: widget.subtleTextColor,
-                            ),
-                          ) : null,
+                          subtitle: key != displayName
+                              ? Text(
+                                  key,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: widget.subtleTextColor,
+                                  ),
+                                )
+                              : null,
                           value: isVisible,
                           onChanged: (bool? value) {
                             setState(() {
@@ -3660,9 +3552,7 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -3678,10 +3568,12 @@ class _HeaderSelectionDialogState extends State<_HeaderSelectionDialog> {
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
-                  onPressed: _tempVisibleHeaders.isEmpty ? null : () {
-                    widget.onApply(_tempVisibleHeaders);
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: _tempVisibleHeaders.isEmpty
+                      ? null
+                      : () {
+                          widget.onApply(_tempVisibleHeaders);
+                          Navigator.of(context).pop();
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: widget.primaryColor,
                     foregroundColor: Colors.white,
@@ -3753,7 +3645,7 @@ class AppStackLoader extends StatelessWidget {
           child: Theme(
             data: ThemeData(
                 colorScheme:
-                ColorScheme.fromSwatch().copyWith(secondary: color)),
+                    ColorScheme.fromSwatch().copyWith(secondary: color)),
             child: const CircularProgressIndicator(
               strokeWidth: 3,
             ),

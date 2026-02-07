@@ -133,38 +133,44 @@ class UserTableExample extends StatelessWidget {
             toTableDataMap: (UserModel user) => user.toTableDataMap(),
             cellBuilders: {
               'Status': (value, UserModel user) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: user.isActive ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: user.isActive ? Colors.green : Colors.red,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      user.isActive ? Icons.check_circle : Icons.cancel_outlined,
-                      size: 16,
-                      color: user.isActive ? Colors.green : Colors.red,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      value.toString(),
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: user.isActive
+                          ? Colors.green.withValues(alpha: 0.1)
+                          : Colors.red.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
                         color: user.isActive ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.w500,
+                        width: 1,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              'Created At': (value, UserModel user) => Text(user.registrationDate.toString(),
-                style: GoogleFonts.poppins(fontSize: 13),
-              ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          user.isActive
+                              ? Icons.check_circle
+                              : Icons.cancel_outlined,
+                          size: 16,
+                          color: user.isActive ? Colors.green : Colors.red,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          value.toString(),
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: user.isActive ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              'Created At': (value, UserModel user) => Text(
+                    user.registrationDate.toString(),
+                    style: GoogleFonts.poppins(fontSize: 13),
+                  ),
             },
             columnSizes: {
               'ID': 60,
@@ -195,9 +201,12 @@ class UserTableExample extends StatelessWidget {
                     onPressed: () => onEdit(user),
                   ),
                   _buildActionButton(
-                    icon: user.isActive ? Icons.block_outlined : Icons.check_circle_outline,
+                    icon: user.isActive
+                        ? Icons.block_outlined
+                        : Icons.check_circle_outline,
                     color: user.isActive ? Colors.red : Colors.green,
-                    tooltip: user.isActive ? 'Deactivate User' : 'Activate User',
+                    tooltip:
+                        user.isActive ? 'Deactivate User' : 'Activate User',
                     onPressed: () => onToggleStatus(user),
                   ),
                 ],
@@ -205,27 +214,27 @@ class UserTableExample extends StatelessWidget {
             ),
             customHeaderBuilders: {
               'Status': (columnName) => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.toggle_on_outlined,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(width: 4),
-                  Flexible(
-                    child: Text(
-                      columnName,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.toggle_on_outlined,
+                        size: 16,
                         color: Colors.white,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          columnName,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
             },
             minWidth: 1170,
             headerColor: const Color(0xFF6D28D9),
